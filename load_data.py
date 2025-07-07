@@ -1,6 +1,6 @@
 from app.models import Base
 from dotenv import load_dotenv
-from app.database import engine
+from app.db.database import engine
 import pandas as pd
 import os
 

@@ -2,7 +2,7 @@ from app.core import config as settings
 from app.db.database import get_db
 from app.models import Account, Trade, RiskMetric
 from app.services.webhook import send_webhook
-from app import utils
+from app.risk_utils import calculations
 from sqlalchemy.orm import Session
 from datetime import datetime
 from tqdm import tqdm
@@ -36,9 +36,9 @@ def calculate_risk_metrics():
                 continue
 
             # 👉 Calculate metrics
-            metrics = utils.calculate_metrics(trades)
-            risk_score = utils.calculate_risk_score(metrics)
-            risk_signals = utils.generate_risk_signals(metrics)
+            metrics = calculations.calculate_metrics(trades)
+            risk_score = calculations.calculate_risk_score(metrics)
+            risk_signals = calculations.generate_risk_signals(metrics)
 
             risk_metric = RiskMetric(
                 account_login=account.login,

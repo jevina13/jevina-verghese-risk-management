@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 import app.models as models
 from app.db.database import get_db
 from app.core.config import settings
-import app.schemas as schemas
-import app.utils as utils
+import app.schemas.schemas as schemas
+import app.risk_utils.calculations as calculations
 import logging
 
 router = APIRouter()
@@ -60,9 +60,9 @@ def get_user_risk_report(user_id: int = Path(...), db: Session = Depends(get_db)
         logger.warning(f"No trades found for User ID {user_id}. Accounts: {account_logins}")
         raise HTTPException(status_code=404, detail="No trades found for user")
 
-    metrics = utils.calculate_metrics(trades)
-    risk_score = utils.calculate_risk_score(metrics)
-    risk_signals = utils.generate_risk_signals(metrics)
+    metrics = calculations.calculate_metrics(trades)
+    risk_score = calculations.calculate_risk_score(metrics)
+    risk_signals = calculations.generate_risk_signals(metrics)
 
     response = {
         "trading_account_login": user_id,
@@ -93,9 +93,9 @@ def get_challenge_risk_report(challenge_id: int = Path(...), db: Session = Depen
         logger.warning(f"No trades found for Challenge ID {challenge_id}. Accounts: {account_logins}")
         raise HTTPException(status_code=404, detail="No trades found for challenge")
 
-    metrics = utils.calculate_metrics(trades)
-    risk_score = utils.calculate_risk_score(metrics)
-    risk_signals = utils.generate_risk_signals(metrics)
+    metrics = calculations.calculate_metrics(trades)
+    risk_score = calculations.calculate_risk_score(metrics)
+    risk_signals = calculations.generate_risk_signals(metrics)
 
     response = {
         "trading_account_login": challenge_id,

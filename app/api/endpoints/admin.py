@@ -1,7 +1,7 @@
 
 from fastapi import APIRouter, HTTPException, Query
 from app.core.config import settings
-import app.schemas as schemas
+import app.schemas.schemas as schemas
 import logging
 
 router = APIRouter()

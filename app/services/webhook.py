@@ -1,12 +1,13 @@
 import requests
 import logging
 from app.core.config import settings
+from app.schemas.schemas import WebhookNotification
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
 def send_webhook(account_login: int, score: float, signals: list[str], last_trade: datetime):
-    payload = {
+    payload = WebhookNotification{
         "trading_account_login": account_login,
         "risk_signals": signals,
         "risk_score": score,

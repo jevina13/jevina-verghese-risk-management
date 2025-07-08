@@ -10,6 +10,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def calculate_risk_metrics():
     """
     Computes and stores risk metrics for all accounts.

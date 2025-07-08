@@ -6,14 +6,14 @@ import logging
 
 router = APIRouter()
 
-# Global task reference
-background_task = None
 
 # Setup logging
 logging.basicConfig(filename='risk_service.log', level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
+# Admin endpoint to update configuration settings
 @router.post("/admin/update-config")
 def update_config(new_config: schemas.ConfigUpdate,
             admin_token: str = Query(..., description="Admin token")):
@@ -42,4 +42,3 @@ def update_config(new_config: schemas.ConfigUpdate,
 
     logger.info(f"Configuration updated: {new_config.model_dump()}")
     return {"message": f"Configuration updated {new_config}"}
-

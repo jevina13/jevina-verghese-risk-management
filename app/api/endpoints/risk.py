@@ -11,14 +11,14 @@ import logging
 
 router = APIRouter()
 
-# Global task reference
-background_task = None
 
 # Setup logging
 logging.basicConfig(filename='risk_service.log', level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
+# Endpoint to get risk report for a specific trading account
 @router.get("/risk-report/{account_login}", response_model=schemas.RiskReport)
 def get_risk_report(account_login: int, db: Session = Depends(get_db)):
     # Get latest risk metric for account
@@ -42,6 +42,7 @@ def get_risk_report(account_login: int, db: Session = Depends(get_db)):
     return response
 
 
+# Endpoint to get risk report for a user
 @router.get("/risk/user/{user_id}", response_model=schemas.RiskReport)
 def get_user_risk_report(user_id: int = Path(...), db: Session = Depends(get_db)):
     accounts = db.query(models.Account).filter_by(user_id=user_id).all()
@@ -75,6 +76,7 @@ def get_user_risk_report(user_id: int = Path(...), db: Session = Depends(get_db)
     return response
 
 
+# Endpoint to get risk report for a specific challenge
 @router.get("/risk/challenge/{challenge_id}", response_model=schemas.RiskReport)
 def get_challenge_risk_report(challenge_id: int = Path(...), db: Session = Depends(get_db)):
     accounts = db.query(models.Account).filter_by(challenge_id=challenge_id).all()

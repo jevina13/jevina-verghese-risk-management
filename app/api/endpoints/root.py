@@ -4,8 +4,6 @@ import logging
 
 router = APIRouter()
 
-# Global task reference
-background_task = None
 
 # Setup logging
 logging.basicConfig(filename='risk_service.log', level=logging.INFO,

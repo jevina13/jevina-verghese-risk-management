@@ -5,7 +5,7 @@ A FastAPI-based microservice to calculate and serve risk metrics for trading acc
 The service computes risk metrics, persists them in a database, and exposes APIs to query them.
 It also schedules risk calculations to run periodically and sends webhook notifications if risk thresholds are breached.
 
-## 📁 Project Structure
+ **Project Structure**
 
 ```
 .

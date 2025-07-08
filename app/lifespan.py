@@ -1,19 +1,17 @@
 from contextlib import asynccontextmanager
 from app.db.database import engine
+from app.scheduler import start_scheduler
 from sqlalchemy import text
 from app.models import Base
-from app.services.metrics import calculate_risk_metrics
-
-
-class Account(Base):
-    __tablename__ = "accounts"
-    ...
 import logging
 
 logger = logging.getLogger(__name__)
 
+
+# FastAPI lifespan manager for startup and shutdown events
 @asynccontextmanager
 async def lifespan(app):
+    # 🟢 Startup: DB setup
     logger.info("🔷 Creating tables & index …")
     Base.metadata.create_all(bind=engine)
 
@@ -24,8 +22,15 @@ async def lifespan(app):
             ON trades (trading_account_login, closed_at)
         """))
 
-    # Run metrics at startup
-    logger.info("🚀 Running metrics calculation at startup")
-    calculate_risk_metrics()
+    # 🚀 Start APScheduler
+    scheduler = start_scheduler()
+    app.state.scheduler = scheduler
 
+    logger.info("✅ Application is ready to serve")
     yield
+
+    # 🛑 Shutdown
+    logger.info("🛑 Application shutting down …")
+    if hasattr(app.state, "scheduler"):
+        app.state.scheduler.shutdown()
+        logger.info("✅ Scheduler stopped cleanly.")

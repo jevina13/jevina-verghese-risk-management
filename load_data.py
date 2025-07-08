@@ -11,10 +11,12 @@ TRADES_CSV = os.getenv("TRADES_CSV_PATH")
 
 REPLACE_TABLES = True  # set to False if you want to only append
 
+
 def validate_columns(df, required_cols, name):
     missing = set(required_cols) - set(df.columns)
     if missing:
         raise ValueError(f"{name} CSV missing columns: {missing}")
+
 
 def load_data():
     # Recreate tables cleanly if needed
@@ -63,6 +65,7 @@ def load_data():
 
     trades_df.to_sql("trades", engine, if_exists="replace" if REPLACE_TABLES else "append", index=False)
     print(f"✅ Loaded {len(trades_df)} trades")
+
 
 if __name__ == "__main__":
     load_data()

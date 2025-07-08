@@ -5,34 +5,36 @@ A FastAPI-based microservice to calculate and serve risk metrics for trading acc
 The service computes risk metrics, persists them in a database, and exposes APIs to query them.
 It also schedules risk calculations to run periodically and sends webhook notifications if risk thresholds are breached.
 
-**Project Structure**
+## 📁 Project Structure
+
+```
 .
 ├── app/                     # Application modules
 │   ├── api/                 # API routes
 │   ├── core/                # Core settings & configs
 │   ├── db/                  # Database connection and helpers
-│   ├── enums/               # Enums
 │   ├── models/              # SQLAlchemy models
-│   ├── risk_utils/          # Risk calculation logic
 │   ├── schemas/             # Pydantic schemas
+│   ├── risk_utils/          # Risk calculation logic
 │   ├── services/            # Service layer (metrics, webhook)
 │   └── __init__.py
 ├── test_data/               # Sample CSVs for testing
 │   ├── test_task_accounts.csv
 │   ├── test_task_trades.csv
-│   ├── test_task_trades_short.csv
+│   └── test_task_trades_short.csv
 ├── lifespan.py              # App startup & shutdown logic
 ├── main.py                  # FastAPI entry point
 ├── scheduler.py             # APScheduler job scheduler
 ├── load_data.py             # Script to load test data into DB
 ├── risk_signal.db           # SQLite database
 ├── requirements.txt         # Python dependencies
-├── README.md                # This file
 ├── .env                     # Environment variables
-├── .gitignore
+├── README.md                # This file
 └── risk_service.log         # Application logs
+```
 
 **Setup & Installation**
+
 ✅ Clone the repository
 git clone <repo-url>
 cd jevina-verghese-risk-management

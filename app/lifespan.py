@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
 from app.db.database import engine
 from sqlalchemy import text
-from app.db.database import Base
+from app.models import Base
+from app.services.metrics import calculate_risk_metrics
+
 
 class Account(Base):
     __tablename__ = "accounts"
@@ -21,5 +23,9 @@ async def lifespan(app):
             CREATE INDEX IF NOT EXISTS idx_trades_login_closed
             ON trades (trading_account_login, closed_at)
         """))
+
+    # Run metrics at startup
+    logger.info("🚀 Running metrics calculation at startup")
+    calculate_risk_metrics()
 
     yield

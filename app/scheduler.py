@@ -6,10 +6,10 @@ def start_scheduler():
     scheduler.add_job(
         calculate_risk_metrics,
         'interval',
-        minutes=30,
+        minutes=15,
         id='risk_metrics_job',
         replace_existing=True
     )
     scheduler.start()
-    print("📅 Scheduler started: Metrics every 30 mins")
+    print("📅 Scheduler started: Metrics every 1 mins")
     return scheduler

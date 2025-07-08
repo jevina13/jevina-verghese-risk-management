@@ -1,4 +1,4 @@
-from app.core import config as settings
+from app.core.config import settings
 from app.db.database import get_db
 from app.models import Account, Trade, RiskMetric
 from app.services.webhook import send_webhook
@@ -40,22 +40,40 @@ def calculate_risk_metrics():
             risk_score = calculations.calculate_risk_score(metrics)
             risk_signals = calculations.generate_risk_signals(metrics)
 
-            risk_metric = RiskMetric(
-                account_login=account.login,
-                timestamp=datetime.utcnow(),
-                win_ratio=metrics['win_ratio'],
-                profit_factor=metrics['profit_factor'],
-                max_drawdown=metrics['max_drawdown'],
-                stop_loss_used=metrics['stop_loss_used'],
-                take_profit_used=metrics['take_profit_used'],
-                hft_count=metrics['hft_count'],
-                max_layering=metrics['max_layering'],
-                risk_score=risk_score,
-                risk_signals=",".join(risk_signals),
-                last_trade_at=metrics['last_trade_at']
-            )
+            # TODO: cHEck this
+            # Check if risk metric already exists for this account
+            existing_metric = db.query(RiskMetric).filter(RiskMetric.account_login == account.login).first()
 
-            db.add(risk_metric)
+            if existing_metric:
+                # Update existing record
+                existing_metric.timestamp = datetime.now()
+                existing_metric.win_ratio = metrics['win_ratio']
+                existing_metric.profit_factor = metrics['profit_factor']
+                existing_metric.max_drawdown = metrics['max_drawdown']
+                existing_metric.stop_loss_used = metrics['stop_loss_used']
+                existing_metric.take_profit_used = metrics['take_profit_used']
+                existing_metric.hft_count = metrics['hft_count']
+                existing_metric.max_layering = metrics['max_layering']
+                existing_metric.risk_score = risk_score
+                existing_metric.risk_signals = ",".join(risk_signals)
+                existing_metric.last_trade_at = metrics['last_trade_at']
+            else:
+                # Insert a new record
+                risk_metric = RiskMetric(
+                    account_login=account.login,
+                    timestamp=datetime.now(),
+                    win_ratio=metrics['win_ratio'],
+                    profit_factor=metrics['profit_factor'],
+                    max_drawdown=metrics['max_drawdown'],
+                    stop_loss_used=metrics['stop_loss_used'],
+                    take_profit_used=metrics['take_profit_used'],
+                    hft_count=metrics['hft_count'],
+                    max_layering=metrics['max_layering'],
+                    risk_score=risk_score,
+                    risk_signals=",".join(risk_signals),
+                    last_trade_at=metrics['last_trade_at']
+                )
+                db.add(risk_metric)
 
             count += 1
             if count % batch_size == 0:

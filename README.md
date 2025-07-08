@@ -32,6 +32,7 @@ It also schedules risk calculations to run periodically and sends webhook notifi
 ├── README.md                # This file
 └── risk_service.log         # Application logs
 ```
+---
 
 **Setup & Installation**
 
@@ -61,6 +62,10 @@ Copy the .env.example file to .env
 ✅ Run the service:
      *uvicorn main:app --reload*
 
+Once running:
+
+📄 Swagger Docs: http://127.0.0.1:8000/docs
+
 ---
 
 **Metrics Calculated**
@@ -89,8 +94,5 @@ The service computes the following risk indicators:
 | GET    | `/risk/challenge/{challenge_id}`    | Aggregated risk score for a challenge   |
 | POST   | `/admin/update-config`              | Update thresholds dynamically           |
 
-Visit:
-
-📄 Swagger Docs: http://127.0.0.1:8000/docs
 
 ---

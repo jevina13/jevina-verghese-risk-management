@@ -17,20 +17,23 @@ It also schedules risk calculations to run periodically and sends webhook notifi
 │   ├── schemas/             # Pydantic schemas
 │   ├── risk_utils/          # Risk calculation logic
 │   ├── services/            # Service layer (metrics, webhook)
+│   ├── main.py              # FastAPI entry point
+│   ├── lifespan.py          # App startup & shutdown logic
+│   ├── scheduler.py         # APScheduler job scheduler
 │   └── __init__.py
 ├── test_data/               # Sample CSVs for testing
 │   ├── test_task_accounts.csv
 │   ├── test_task_trades.csv
 │   └── test_task_trades_short.csv
-├── lifespan.py              # App startup & shutdown logic
-├── main.py                  # FastAPI entry point
-├── scheduler.py             # APScheduler job scheduler
 ├── load_data.py             # Script to load test data into DB
 ├── risk_signal.db           # SQLite database
 ├── requirements.txt         # Python dependencies
 ├── .env                     # Environment variables
-├── README.md                # This file
+├── .env.example             # Example environment file
+├── README.md                # Project documentation
+├── .gitignore
 └── risk_service.log         # Application logs
+
 ```
 ---
 

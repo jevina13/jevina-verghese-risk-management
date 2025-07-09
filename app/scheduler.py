@@ -8,14 +8,14 @@ logger = logging.getLogger(__name__)
 
 def start_scheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(
+    job = scheduler.add_job(
         calculate_risk_metrics,
         'interval',
-        minutes=30,
+        minutes=600,
         id='risk_metrics_job',
         replace_existing=True,
-        next_run_time=datetime.now()  # 👈 runs immediately + every 30 min
+        next_run_time=datetime.now()  # runs immediately + every interval
     )
     scheduler.start()
-    logger.info("📅 Scheduler started: first run NOW, then every 30 minutes.")
+    logger.info(f"📅 Scheduler started for job: {job.id} at {job.next_run_time}.")
     return scheduler

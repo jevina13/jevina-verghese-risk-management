@@ -2,7 +2,12 @@
 from fastapi import APIRouter, HTTPException, Query
 from app.core.config import settings
 import app.schemas.schemas as schemas
+from dotenv import load_dotenv
 import logging
+import os
+
+
+load_dotenv()
 
 router = APIRouter()
 
@@ -15,12 +20,12 @@ logger = logging.getLogger(__name__)
 
 # Admin endpoint to update configuration settings
 @router.post("/admin/update-config")
-def update_config(new_config: schemas.ConfigUpdate,
-            admin_token: str = Query(..., description="Admin token")):
+def update_config(new_config: schemas.ConfigUpdate, admin_token: str = Query(..., description="Admin token")):
 
-    if admin_token != "secure_admin_token":
+    TOKEN = os.getenv("TOKEN")
+    if admin_token != TOKEN:
         logger.warning(f"User Unauthorized : Wrong token! {admin_token}")
-        raise HTTPException(status_code=403, detail="Unauthorized")
+        raise HTTPException(status_code=403, detail="Unauthorized User: Wrong token!")
 
     # Update configuration
     if new_config.window_size is not None:

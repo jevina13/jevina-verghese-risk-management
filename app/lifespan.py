@@ -4,7 +4,6 @@ from app.scheduler import start_scheduler
 from sqlalchemy import text
 from app.models import Base
 import logging
-import socket
 
 logger = logging.getLogger(__name__)
 
@@ -15,11 +14,6 @@ async def lifespan(app):
     # 🟢 Startup: DB setup
     logger.info("🔷 Creating tables & index …")
     Base.metadata.create_all(bind=engine)
-    hostname = socket.gethostname()
-    try:
-        local_ip = socket.gethostbyname(hostname)
-    except Exception:
-        local_ip = "127.0.0.1"
 
     with engine.begin() as conn:
         conn.execute(text("PRAGMA journal_mode=WAL;"))
@@ -33,10 +27,8 @@ async def lifespan(app):
     app.state.scheduler = scheduler
 
     logger.info("✅ Application is ready to serve")
-    if local_ip:
-        logger.info(f"   → Service running on http://{local_ip}:8000 (on your LAN)")
-    else:   
-        logger.info("   → Service running on http://127.0.0.1:8000 (localhost)")
+    logger.info(" → Service running on  http://127.0.0.1:8000/")
+    logger.info(" → Swagger Docs on  http://127.0.0.1:8000/docs")
 
     yield
 

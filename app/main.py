@@ -1,13 +1,12 @@
 from fastapi import FastAPI
-import logging
+from app.core.logging_config import setup_logging
 from app.api.routes import include_routers
 from app.lifespan import lifespan
 
+logger = setup_logging()
 
-# Setup logging
-logging.basicConfig(filename='risk_service.log', level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logger.info("🎯 Risk Signal Service starting up…")
+
 
 # Main entry point for the FastAPI application
 app = FastAPI(

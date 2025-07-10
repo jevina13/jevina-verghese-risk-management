@@ -13,6 +13,8 @@ It also schedules risk calculations to run periodically and sends webhook notifi
 │   ├── api/                 # API routes
 │   ├── core/                # Core settings & configs
 │   ├── db/                  # Database connection and helpers
+│   ├── enums/               # Enums
+│   ├── logs/                # Log records
 │   ├── models/              # SQLAlchemy models
 │   ├── schemas/             # Pydantic schemas
 │   ├── risk_utils/          # Risk calculation logic
@@ -57,6 +59,7 @@ pip install -r requirements.txt
       *WEBHOOK_URL*
       *SQLALCHEMY_DATABASE_URL*
       *SECURITY_TOKEN*
+      *LOG_DIR*
 
 ✅ Set up environment variables:
 Copy the .env.example file to .env
@@ -66,7 +69,16 @@ Copy the .env.example file to .env
 ✅ Run the service:
      *uvicorn main:app --reload*
 
-Once running:
+✅ To run with Docker
+
+Build the Docker image and run:
+```bash
+docker build -t risk-signal-service .
+docker run -d -p 8000:8000 -v /absolute/path/to/logs:/app/logs --name risk_service risk-signal-service
+```
+
+
+Once running, open your browser and check:
 
 📄 Swagger Docs: http://127.0.0.1:8000/docs
 

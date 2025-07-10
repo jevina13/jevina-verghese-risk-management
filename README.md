@@ -69,13 +69,14 @@ Copy the .env.example file to .env
 ✅ Run the service:
      *uvicorn main:app --reload*
 
-✅ To run with Docker
-
-Build the Docker image and run:
-```bash
-docker build -t risk-signal-service .
-docker run -d -p 8000:8000 -v /absolute/path/to/logs:/app/logs --name risk_service risk-signal-service
-```
+✅ To run with Docker:
+     Create a /logs directory inside your /app to store and manage log files.
+     
+     Build the Docker image and run:
+     ```bash
+     docker build -t risk-signal-service .
+     docker run -d -p 8000:8000 -v /absolute/path/to/logs:/app/logs --name risk_service risk-signal-service
+     ```
 
 
 Once running, open your browser and check:
